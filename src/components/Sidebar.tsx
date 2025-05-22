@@ -7,8 +7,15 @@ import {
   Settings,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useProfileStore } from "@/stores/useProfileStore";
+import { useEffect } from "react";
 
 export const Sidebar = () => {
+  const { basicProfile, getBasicProfile } = useProfileStore();
+  useEffect(() => {
+    getBasicProfile("fcf05fc7-44cc-4455-8883-2d47e1221146");
+  }, [getBasicProfile]);
+
   return (
     <aside className="fixed w-70 h-screen bg-base-200 flex-col justify-between hidden md:flex ">
       <div className="p-4 space-y-4">
@@ -31,7 +38,7 @@ export const Sidebar = () => {
         </button>
         <button className="btn btn-primary w-full justify-start gap-2">
           <Avatar className="w-6 h-6">
-            <AvatarImage src="/avatar.png" alt="Avatar" />
+            <AvatarImage src={basicProfile?.avatarUrl} alt="Avatar" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           Profile

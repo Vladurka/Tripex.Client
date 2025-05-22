@@ -6,6 +6,7 @@ import { PostComponent } from "./components/PostComponent";
 import { MessageSkeleton } from "./components/MessageSkeleton";
 import { PostSkeleton } from "./components/PostSkeleton";
 import { UserSkeleton } from "./components/UserSkeleton";
+import { Sidebar } from "@/components/Sidebar";
 
 export const HomePage = () => {
   const { posts, isLoading, getPosts } = usePostStore();
@@ -28,6 +29,7 @@ export const HomePage = () => {
 
   return (
     <>
+      <Sidebar />
       <div className="flex ml-0 md:ml-80 w-[600px] h-[90vh] bg-base-100 rounded-xl shadow-lg text-white flex-col overflow-hidden mt-9">
         <div className="flex gap-3 border-b border-white pl-12 py-3">
           <Image className="w-6 h-6 text-white" />
