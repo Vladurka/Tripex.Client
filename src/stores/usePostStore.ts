@@ -5,6 +5,7 @@ import { create } from "zustand";
 interface PostStore {
   posts: Post[];
   getPosts: () => void;
+  getPostsByProfile: (id: string) => void;
   isLoading: boolean;
   error: string | null;
 }
@@ -18,6 +19,31 @@ export const usePostStore = create<PostStore>()((set) => ({
 
     try {
       const { data } = await axiosInstance.get("/posts");
+
+      const postsWithUsers = await Promise.all(
+        data.posts.map(async (post: Post) => {
+          try {
+            const { data: user } = await axiosInstance.get(
+              `/profiles/basic/${post.profileId}`
+            );
+            return { ...post, user };
+          } catch (error: any) {
+            set({ error: error.message });
+          }
+        })
+      );
+
+      set({ posts: postsWithUsers });
+    } catch (error: any) {
+      set({ error: error.message });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+  getPostsByProfile: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const { data } = await axiosInstance.get(`/posts/user/${id}`);
 
       const postsWithUsers = await Promise.all(
         data.posts.map(async (post: Post) => {

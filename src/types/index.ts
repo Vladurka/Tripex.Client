@@ -15,12 +15,13 @@ export interface BasicProfile {
 
 export interface Profile {
   id: string;
-  avatarUrl: string;
   profileName: string;
+  avatarUrl: string;
   firstName: string;
   lastName: string;
   description: string;
-  createdAt: string;
+  followersCount: number;
+  followingCount: number;
 }
 
 export interface UserSignUp {

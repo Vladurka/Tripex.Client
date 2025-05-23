@@ -1,22 +1,22 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
-import type { Profile, UserLogIn, UserSignUp } from "../types";
+import type { UserLogIn, UserSignUp } from "../types";
 
 interface AuthStore {
-  authUser: Profile | null;
+  userId: string | null;
   isSigningUp: boolean;
   isLoggingIn: boolean;
   isCheckingAuth: boolean;
   error: string | null;
 
   checkAuth: () => Promise<void>;
-  signup: (data: UserSignUp) => Promise<void>;
-  login: (data: UserLogIn) => Promise<void>;
+  signup: (input: UserSignUp) => Promise<void>;
+  login: (input: UserLogIn) => Promise<void>;
   logout: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
-  authUser: null,
+  userId: null,
   isSigningUp: false,
   isLoggingIn: false,
   isCheckingAuth: true,
@@ -25,21 +25,20 @@ export const useAuthStore = create<AuthStore>((set) => ({
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
-      const { data } = await axiosInstance.get(`/profiles/${res.data.id}`);
-      set({ authUser: data });
+      set({ userId: res.data });
     } catch (error: any) {
       console.error("Error in checkAuth:", error);
-      set({ authUser: null });
+      set({ userId: null });
     } finally {
       set({ isCheckingAuth: false });
     }
   },
 
-  signup: async (data) => {
+  signup: async (input) => {
     set({ isSigningUp: true });
     try {
-      const res = await axiosInstance.post("/auth/signup", data);
-      set({ authUser: res.data });
+      const res = await axiosInstance.post("/auth/signup", input);
+      set({ userId: res.data.userId });
     } catch (error: any) {
       set({ error: error.message });
     } finally {
@@ -47,12 +46,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 
-  login: async (data) => {
+  login: async (input) => {
     set({ isLoggingIn: true });
     try {
-      const res = await axiosInstance.post("/auth/login", data);
-      console.log(res.data);
-      set({ authUser: res.data });
+      const res = await axiosInstance.post("/auth/login", input);
+      set({ userId: res.data.userId });
     } catch (error: any) {
       set({ error: error.message });
     } finally {
@@ -63,7 +61,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
-      set({ authUser: null });
+      set({ userId: null });
     } catch (error: any) {
       set({ error: error.message });
     }

@@ -7,20 +7,28 @@ import {
   Settings,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useProfileStore } from "@/stores/useProfileStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useEffect } from "react";
+import { useProfileStore } from "@/stores/useProfileStore";
+import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
+  const { userId } = useAuthStore();
   const { basicProfile, getBasicProfile } = useProfileStore();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    getBasicProfile("fcf05fc7-44cc-4455-8883-2d47e1221146");
-  }, [getBasicProfile]);
+    if (userId) getBasicProfile(userId);
+  }, [userId, getBasicProfile]);
 
   return (
     <aside className="fixed w-70 h-screen bg-base-200 flex-col justify-between hidden md:flex ">
       <div className="p-4 space-y-4">
         <img src="/logo.png" alt="logo" />
-        <button className="btn btn-primary w-full justify-start gap-2">
+        <button
+          className="btn btn-primary w-full justify-start gap-2"
+          onClick={() => navigate("/")}
+        >
           <HomeIcon className="w-6 h-6" aria-hidden="true" />
           Main
         </button>
@@ -36,12 +44,20 @@ export const Sidebar = () => {
           <BadgePlus className="w-6 h-6" aria-hidden="true" />
           Create
         </button>
-        <button className="btn btn-primary w-full justify-start gap-2">
+        <button
+          className="btn btn-primary w-full justify-start gap-2"
+          onClick={() => navigate("/profile/me")}
+        >
           <Avatar className="w-6 h-6">
-            <AvatarImage src={basicProfile?.avatarUrl} alt="Avatar" />
+            <AvatarImage
+              src={
+                basicProfile?.avatarUrl ? basicProfile.avatarUrl : "/avatar.png"
+              }
+              alt="Avatar"
+            />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          Profile
+          My Profile
         </button>
       </div>
       <div className="space-y-4 p-4">

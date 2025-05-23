@@ -14,7 +14,7 @@ export const LogInPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(formData);
+    await login(formData);
   };
 
   return (
