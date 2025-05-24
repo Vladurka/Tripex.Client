@@ -5,9 +5,9 @@ import { create } from "zustand";
 
 interface UpdateProfile {
   profileName: string;
-  firstName: string;
-  lastName: string;
-  description: string;
+  firstName: string | null;
+  lastName: string | null;
+  description: string | null;
 }
 
 interface ProfileStore {
@@ -57,8 +57,13 @@ export const useProfileStore = create<ProfileStore>()((set) => ({
       await axiosInstance.put("/profiles", input);
       toast.success("Profile updated successfully");
     } catch (error: any) {
-      set({ error: error.message });
-      toast.error("Failed to update profile");
+      const detail =
+        error.response?.data?.detail ||
+        error.response?.data?.title ||
+        "Something went wrong. Please try again later.";
+
+      set({ error: detail });
+      toast.error(detail);
     } finally {
       set({ isLoading: false });
     }

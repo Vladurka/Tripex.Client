@@ -2,7 +2,7 @@ export interface Post {
   id: string;
   profileId: string;
   contentUrl: string;
-  description: string;
+  description: string | null;
   createdAt: string;
   user: BasicProfile;
 }
@@ -10,16 +10,16 @@ export interface Post {
 export interface BasicProfile {
   id: string;
   profileName: string;
-  avatarUrl: string;
+  avatarUrl: string | null;
 }
 
 export interface Profile {
   id: string;
   profileName: string;
-  avatarUrl: string;
-  firstName: string;
-  lastName: string;
-  description: string;
+  avatarUrl: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  description: string | null;
   followersCount: number;
   followingCount: number;
 }

@@ -53,14 +53,10 @@ export const Sidebar = () => {
         >
           <Avatar className="w-6 h-6">
             <AvatarImage
-              src={
-                userId && basicProfile?.avatarUrl
-                  ? basicProfile.avatarUrl
-                  : "/avatar.png"
-              }
+              src={(userId && basicProfile?.avatarUrl) ?? "/avatar.png"}
               alt="Avatar"
             />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>{"/avatar.png"}</AvatarFallback>
           </Avatar>
           My Profile
         </button>
