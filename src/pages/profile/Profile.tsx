@@ -3,8 +3,11 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { usePostStore } from "@/stores/usePostStore";
 import { useProfileStore } from "@/stores/useProfileStore";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export const Profile = () => {
+  const { id } = useParams();
+
   const { profile, getProfile, updateProfile } = useProfileStore();
   const { userId } = useAuthStore();
   const { posts, getPostsByProfile } = usePostStore();
@@ -19,11 +22,13 @@ export const Profile = () => {
     null
   );
 
+  const [isFollowing, setIsFollowing] = useState(false);
+
   useEffect(() => {
-    if (!userId) return;
-    getProfile(userId);
-    getPostsByProfile(userId);
-  }, [getProfile, getPostsByProfile, userId]);
+    if (!id) return;
+    getProfile(id);
+    getPostsByProfile(id);
+  }, [getProfile, getPostsByProfile, id]);
 
   useEffect(() => {
     if (profile && userId) {
@@ -35,7 +40,7 @@ export const Profile = () => {
     }
   }, [profile, userId]);
 
-  if (!userId || !profile) return null;
+  if (!userId || !profile) return;
 
   const handleSave = async () => {
     const trimmedName = editedName.trim();
@@ -97,8 +102,8 @@ export const Profile = () => {
               </h1>
             )}
 
-            {isMyProfile &&
-              (isEditing ? (
+            {isMyProfile ? (
+              isEditing ? (
                 <>
                   <button
                     className="btn btn-success btn-sm mt-1"
@@ -121,7 +126,15 @@ export const Profile = () => {
                 >
                   Edit profile
                 </button>
-              ))}
+              )
+            ) : (
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => setIsFollowing(!isFollowing)}
+              >
+                {isFollowing ? "Unfollow" : "Follow"}
+              </button>
+            )}
           </div>
 
           <div className="flex gap-6 text-sm mt-2 text-primary-content">
