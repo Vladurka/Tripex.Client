@@ -1,6 +1,7 @@
 import {
   BadgePlus,
   HomeIcon,
+  LogIn,
   LogOut,
   MessageCircle,
   Search,
@@ -13,16 +14,18 @@ import { useProfileStore } from "@/stores/useProfileStore";
 import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
-  const { userId } = useAuthStore();
+  const { userId, logout } = useAuthStore();
   const { basicProfile, getBasicProfile } = useProfileStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userId) getBasicProfile(userId);
+    if (userId) {
+      getBasicProfile(userId);
+    }
   }, [userId, getBasicProfile]);
 
   return (
-    <aside className="fixed w-70 h-screen bg-base-200 flex-col justify-between hidden md:flex ">
+    <aside className="fixed w-70 h-screen flex-col justify-between hidden md:flex bg-base-100">
       <div className="p-4 space-y-4">
         <img src="/logo.png" alt="logo" />
         <button
@@ -46,12 +49,14 @@ export const Sidebar = () => {
         </button>
         <button
           className="btn btn-primary w-full justify-start gap-2"
-          onClick={() => navigate("/profile/me")}
+          onClick={() => navigate("/profile/" + userId)}
         >
           <Avatar className="w-6 h-6">
             <AvatarImage
               src={
-                basicProfile?.avatarUrl ? basicProfile.avatarUrl : "/avatar.png"
+                userId && basicProfile?.avatarUrl
+                  ? basicProfile.avatarUrl
+                  : "/avatar.png"
               }
               alt="Avatar"
             />
@@ -65,9 +70,21 @@ export const Sidebar = () => {
           <Settings className="w-5 h-5" aria-hidden="true" />
           Settings
         </button>
-        <button className="btn btn-primary w-full justify-start gap-2">
-          <LogOut className="w-5 h-5" aria-hidden="true" />
-          Log out
+        <button
+          className="btn btn-primary w-full justify-start gap-2"
+          onClick={userId ? logout : () => navigate("/login")}
+        >
+          {userId ? (
+            <>
+              <LogOut className="w-5 h-5" aria-hidden="true" />
+              Log Out
+            </>
+          ) : (
+            <>
+              <LogIn className="w-5 h-5" aria-hidden="true" />
+              Log In
+            </>
+          )}
         </button>
       </div>
     </aside>

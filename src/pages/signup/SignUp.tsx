@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuthStore } from "../../stores/useAuthStore";
-import type { UserSignUp } from "../../types/index";
 import {
   Eye,
   EyeOff,
@@ -42,7 +41,7 @@ export const SignUpPage = () => {
 
     const success = validateForm();
 
-    const newUser: UserSignUp = {
+    const newUser = {
       email: formData.email,
       userName: formData.userName,
       password: formData.password,
@@ -52,7 +51,7 @@ export const SignUpPage = () => {
   };
 
   return (
-    <div className="ml-[20%] min-h-screen grid lg:grid-cols-2">
+    <div className="pl-[20%] min-h-screen grid lg:grid-cols-2 bg-base-200">
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center mb-8">

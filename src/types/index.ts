@@ -23,14 +23,3 @@ export interface Profile {
   followersCount: number;
   followingCount: number;
 }
-
-export interface UserSignUp {
-  email: string;
-  userName: string;
-  password: string;
-}
-
-export interface UserLogIn {
-  email: string;
-  password: string;
-}

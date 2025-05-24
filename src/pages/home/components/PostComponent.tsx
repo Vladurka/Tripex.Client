@@ -1,24 +1,22 @@
 import type { Post } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 import { MessageCircle, Pin, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const PostComponent = (post: Post) => {
+  const navigate = useNavigate();
   return (
     <div key={post.id} className="card bg-base-200 shadow-sm shadow-amber-50">
       <div className="card-body py-2 px-4">
         <div className="flex items-center space-x-3 mb-3">
-          <div className="avatar">
-            <div className="w-10 rounded-full cursor-pointer">
-              <img
-                src={
-                  post.user.avatarUrl === ""
-                    ? "/avatar.png"
-                    : post.user.avatarUrl
-                }
-                alt="Avatar"
-              />
-            </div>
-          </div>
+          <img
+            src={
+              post.user.avatarUrl === "" ? "/avatar.png" : post.user.avatarUrl
+            }
+            alt="Avatar"
+            className="avatar w-10 rounded-full cursor-pointer"
+            onClick={() => navigate(`/profile/${post.user.id}`)}
+          />
           <span className="font-semibold">{post.user.profileName}</span>
         </div>
 

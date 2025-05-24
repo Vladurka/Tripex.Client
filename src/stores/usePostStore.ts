@@ -26,6 +26,7 @@ export const usePostStore = create<PostStore>()((set) => ({
             const { data: user } = await axiosInstance.get(
               `/profiles/basic/${post.profileId}`
             );
+            user.id = post.profileId;
             return { ...post, user };
           } catch (error: any) {
             set({ error: error.message });

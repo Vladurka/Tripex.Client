@@ -1,6 +1,16 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
-import type { UserLogIn, UserSignUp } from "../types";
+
+interface UserSignUp {
+  email: string;
+  userName: string;
+  password: string;
+}
+
+interface UserLogIn {
+  email: string;
+  password: string;
+}
 
 interface AuthStore {
   userId: string | null;

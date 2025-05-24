@@ -1,12 +1,13 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { HomePage } from "./pages/home/HomePage";
-import { useAuthStore } from "./stores/useAuthStore";
-import { use, useEffect } from "react";
-import { Loader } from "lucide-react";
 import { LogInPage } from "./pages/login/LogInPage";
 import { SignUpPage } from "./pages/signup/SignUp";
-import { Toaster } from "react-hot-toast";
 import { Profile } from "./pages/profile/Profile";
+import { useAuthStore } from "./stores/useAuthStore";
+import { useEffect } from "react";
+import { Loader } from "lucide-react";
+import { Toaster } from "react-hot-toast";
+import { MainLayout } from "./layouts/MainLayout"; // путь к layout
 
 export const App = () => {
   const { userId, checkAuth, isCheckingAuth } = useAuthStore();
@@ -26,23 +27,24 @@ export const App = () => {
   return (
     <>
       <Toaster position="top-center" />
-      <div className="flex bg-base-200">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
           <Route
-            path="/profile/me"
+            path="profile/:id"
             element={userId ? <Profile /> : <Navigate to="/login" />}
           />
-          <Route
-            path="/login"
-            element={userId ? <Navigate to="/" /> : <LogInPage />}
-          />
-          <Route
-            path="/signup"
-            element={userId ? <Navigate to="/" /> : <SignUpPage />}
-          />
-        </Routes>
-      </div>
+        </Route>
+
+        <Route
+          path="/login"
+          element={userId ? <Navigate to="/" /> : <LogInPage />}
+        />
+        <Route
+          path="/signup"
+          element={userId ? <Navigate to="/" /> : <SignUpPage />}
+        />
+      </Routes>
     </>
   );
 };
