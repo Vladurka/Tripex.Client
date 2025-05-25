@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { PostType } from "@/types";
 import { MessageCircle, Pin, Zap } from "lucide-react";
+import { motion } from "framer-motion";
 
 type Props = {
   post: PostType;
@@ -20,11 +21,22 @@ export const PostDetailed = ({ post, onClose }: Props) => {
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
   };
 
-  if (!post) return;
+  if (!post) return null;
 
   return (
-    <div className="fixed inset-0  z-50 flex items-center justify-center">
-      <div className="bg-black text-white w-full max-w-5xl h-[90vh] rounded-xl overflow-hidden flex shadow-xl">
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center ml-10 mb-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.div
+        className="bg-base-300 text-white w-full max-w-5xl h-[90vh] rounded-xl overflow-hidden flex shadow-xl"
+        initial={{ scale: 0.95, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 50 }}
+        transition={{ duration: 0.3 }}
+      >
         <div className="w-1/2 bg-black flex items-center justify-center">
           <img
             src={post.contentUrl}
@@ -35,12 +47,12 @@ export const PostDetailed = ({ post, onClose }: Props) => {
 
         <div className="w-1/2 flex flex-col">
           <div className="p-4 border-b border-gray-700 flex justify-between items-center">
-            <div className="inline-flex gap-3">
+            <div className="inline-flex gap-3 mt-2">
               <img
                 src={post.user.avatarUrl ?? "/avatar.png"}
                 alt="avatar"
                 className="w-10 h-10 rounded-full"
-              ></img>
+              />
               <div className="font-semibold mt-2">{post.user.profileName}</div>
             </div>
 
@@ -51,10 +63,11 @@ export const PostDetailed = ({ post, onClose }: Props) => {
               ✕
             </button>
           </div>
+
           {post.description && (
             <div className="p-4 text-sm border-b border-gray-700">
               <p>
-                <span className="font-bold mr-1">{post.user.profileName}</span>
+                <span className="font-bold mr-1">{post.user.profileName}:</span>
                 {post.description}
               </p>
             </div>
@@ -93,7 +106,7 @@ export const PostDetailed = ({ post, onClose }: Props) => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Add a comment..."
-              className="flex-1 bg-black text-white placeholder-gray-500 text-sm outline-none"
+              className="flex-1 bg-base-300 text-white placeholder-gray-500 text-sm outline-none"
             />
             <button
               className="text-blue-500 text-sm font-semibold ml-2 disabled:opacity-50 cursor-pointer"
@@ -103,7 +116,7 @@ export const PostDetailed = ({ post, onClose }: Props) => {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };

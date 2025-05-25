@@ -6,6 +6,7 @@ import { PostDetailed } from "@/components/PostDetailed";
 import type { PostType } from "@/types";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 export const ProfilePage = () => {
   const { id } = useParams();
@@ -213,12 +214,14 @@ export const ProfilePage = () => {
         ))}
       </div>
 
-      {selectedPost && (
-        <PostDetailed
-          post={selectedPost}
-          onClose={() => setSelectedPost(null)}
-        />
-      )}
+      <AnimatePresence>
+        {selectedPost && (
+          <PostDetailed
+            post={selectedPost}
+            onClose={() => setSelectedPost(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
