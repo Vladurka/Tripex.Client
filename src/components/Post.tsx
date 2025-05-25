@@ -1,10 +1,9 @@
-import type { Post } from "@/types";
-import { formatDistanceToNow } from "date-fns";
+import type { PostType } from "@/types";
 import { MessageCircle, Pin, Zap } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const PostComponent = (post: Post) => {
+export const Post = (post: PostType) => {
   const navigate = useNavigate();
 
   const [liked, setLiked] = useState(false);

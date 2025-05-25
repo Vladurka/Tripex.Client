@@ -1,19 +1,19 @@
-export interface Post {
+export interface PostType {
   id: string;
   profileId: string;
   contentUrl: string;
   description: string | null;
   createdAt: string;
-  user: BasicProfile;
+  user: BasicProfileType;
 }
 
-export interface BasicProfile {
+export interface BasicProfileType {
   id: string;
   profileName: string;
   avatarUrl: string | null;
 }
 
-export interface Profile {
+export interface ProfileType {
   id: string;
   profileName: string;
   avatarUrl: string | null;

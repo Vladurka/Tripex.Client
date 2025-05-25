@@ -1,8 +1,8 @@
 import { usePostStore } from "@/stores/usePostStore";
 import { Image, MessageCircle, User } from "lucide-react";
 import { useEffect } from "react";
-import type { Post } from "@/types";
-import { PostComponent } from "./components/PostComponent";
+import type { PostType } from "@/types";
+import { Post } from "../../components/Post";
 import { MessageSkeleton } from "./components/MessageSkeleton";
 import { PostSkeleton } from "./components/PostSkeleton";
 import { UserSkeleton } from "./components/UserSkeleton";
@@ -11,14 +11,15 @@ export const HomePage = () => {
   const { posts, isLoading, getPosts } = usePostStore();
 
   useEffect(() => {
-    getPosts();
+    const loadPosts = async () => await getPosts();
+    loadPosts();
   }, [getPosts]);
 
   if (isLoading || !Array.isArray(posts)) {
     return (
       <div className="min-h-screen bg-base-200 text-white pt-6 px-4 ml-0 md:ml-80">
         <div className="w-full max-w-xl space-y-6 px-4">
-          {posts.map((post: Post) => (
+          {posts.map((post: PostType) => (
             <PostSkeleton key={post.id} {...post} />
           ))}
         </div>
@@ -36,8 +37,8 @@ export const HomePage = () => {
 
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           <div className="w-full max-w-xl space-y-6 px-4">
-            {posts.map((post: Post) => (
-              <PostComponent key={post.id} {...post} />
+            {posts.map((post: PostType) => (
+              <Post key={post.id} {...post} />
             ))}
           </div>
         </div>

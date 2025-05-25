@@ -2,33 +2,34 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { usePostStore } from "@/stores/usePostStore";
 import { useProfileStore } from "@/stores/useProfileStore";
+import { PostDetailed } from "@/components/PostDetailed";
+import type { PostType } from "@/types";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-export const Profile = () => {
+export const ProfilePage = () => {
   const { id } = useParams();
-
   const { profile, getProfile, updateProfile } = useProfileStore();
   const { userId } = useAuthStore();
   const { posts, getPostsByProfile } = usePostStore();
 
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-
   const [editedName, setEditedName] = useState("");
   const [editedFirstName, setEditedFirstName] = useState<string | null>(null);
   const [editedLastName, setEditedLastName] = useState<string | null>(null);
   const [editedDescription, setEditedDescription] = useState<string | null>(
     null
   );
-
   const [isFollowing, setIsFollowing] = useState(false);
+
+  const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
 
   useEffect(() => {
     if (!id) return;
     getProfile(id);
     getPostsByProfile(id);
-  }, [getProfile, getPostsByProfile, id]);
+  }, [id, getProfile, getPostsByProfile]);
 
   useEffect(() => {
     if (profile && userId) {
@@ -40,13 +41,11 @@ export const Profile = () => {
     }
   }, [profile, userId]);
 
-  if (!userId || !profile) return;
+  if (!userId || !profile) return null;
 
   const handleSave = async () => {
     const trimmedName = editedName.trim();
-    if (!trimmedName) {
-      return;
-    }
+    if (!trimmedName) return;
 
     await updateProfile({
       profileName: trimmedName,
@@ -203,15 +202,23 @@ export const Profile = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-2 mt-8 max-w-4xl w-full ml-[10%] border-t-2 pt-10">
-        {posts.map((post, index) => (
+        {posts.map((post) => (
           <img
-            key={index}
+            key={post.id}
             src={post.contentUrl}
-            alt={`Post ${index + 1}`}
-            className="h-full aspect-square object-cover"
+            alt={`Post ${post.id}`}
+            className="h-full aspect-square object-cover cursor-pointer hover:scale-105 hover:duration-300 transition"
+            onClick={() => setSelectedPost(post)}
           />
         ))}
       </div>
+
+      {selectedPost && (
+        <PostDetailed
+          post={selectedPost}
+          onClose={() => setSelectedPost(null)}
+        />
+      )}
     </div>
   );
 };

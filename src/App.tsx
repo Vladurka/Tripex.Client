@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { HomePage } from "./pages/home/HomePage";
 import { LogInPage } from "./pages/login/LogInPage";
-import { SignUpPage } from "./pages/signup/SignUp";
-import { Profile } from "./pages/profile/Profile";
+import { SignUpPage } from "./pages/signup/SignUpPage";
+import { ProfilePage } from "./pages/profile/ProfilePage";
 import { useAuthStore } from "./stores/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
@@ -32,7 +32,7 @@ export const App = () => {
           <Route index element={<HomePage />} />
           <Route
             path="profile/:id"
-            element={userId ? <Profile /> : <Navigate to="/login" />}
+            element={userId ? <ProfilePage /> : <Navigate to="/login" />}
           />
         </Route>
 

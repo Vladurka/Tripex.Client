@@ -1,9 +1,9 @@
 import { axiosInstance } from "@/lib/axios";
-import type { Post } from "@/types";
+import type { PostType } from "@/types";
 import { create } from "zustand";
 
 interface PostStore {
-  posts: Post[];
+  posts: PostType[];
   getPosts: () => void;
   getPostsByProfile: (id: string) => void;
   isLoading: boolean;
@@ -21,7 +21,7 @@ export const usePostStore = create<PostStore>()((set) => ({
       const { data } = await axiosInstance.get("/posts");
 
       const postsWithUsers = await Promise.all(
-        data.posts.map(async (post: Post) => {
+        data.posts.map(async (post: PostType) => {
           try {
             const { data: user } = await axiosInstance.get(
               `/profiles/basic/${post.profileId}`
@@ -47,7 +47,7 @@ export const usePostStore = create<PostStore>()((set) => ({
       const { data } = await axiosInstance.get(`/posts/user/${id}`);
 
       const postsWithUsers = await Promise.all(
-        data.posts.map(async (post: Post) => {
+        data.posts.map(async (post: PostType) => {
           try {
             const { data: user } = await axiosInstance.get(
               `/profiles/basic/${post.profileId}`
